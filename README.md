@@ -1,4 +1,5 @@
 # Linux-Project-Diary
+----------------
 TO-DO LIST:
 ENCRYPTION
 QUOTE SYSTEM
