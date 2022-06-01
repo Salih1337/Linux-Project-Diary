@@ -1,18 +1,9 @@
 # Linux-Project-Diary
-----------------
 
-
-
-
-
-
-
-
-
-TO-DO LIST:
+# TO-DO LIST:
 ENCRYPTION
 QUOTE SYSTEM
 REGULAR DIARY SYSTEM
 ----------------
-USE:
+# USE:
 linux-bash dialog
