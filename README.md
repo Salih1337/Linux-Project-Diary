@@ -1,8 +1,12 @@
 # Linux-Project-Diary
 
-# TO-DO LIST:
- ENCRYPTION
- QUOTE SYSTEM
- REGULAR DIARY SYSTEM
-# USE:
- linux-bash dialog
+## To-Do list:
+- ~~Encryption~~
+- Decryption
+- Quote system
+- Regular diary system
+- User specific diaries
+
+## Usage:
+To read from diary: `./diary.sh -r diary_name` <br>
+To write a new diary: `./diary.sh -w diary_name`
