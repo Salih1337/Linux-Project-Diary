@@ -1,0 +1,2 @@
+# Linux-Project-Diary-
+CE350 LESSON LINUX PROJECT
