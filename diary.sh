@@ -9,6 +9,18 @@ function check_dependencies() {
 	fi
 }
 
+function help() {
+	echo $'Cool diary tool\n'
+	echo 'USAGE:'
+	echo $'\t./diary.sh [OPTIONS] [FILE_NAME]\n'
+
+	echo 'OPTIONS:'
+	echo $'\t-w \t Write a new diary'
+	echo $'\t-r \t Read contents of a diary'
+	echo $'\t-e \t Edit diary'
+	exit 0
+}
+
 function get_date() {
 	diary_date=$(dialog --ascii-lines --keep-tite --stdout --title "Select a date" \
 		--calendar "Select a date:" 0 0)
@@ -34,18 +46,16 @@ function write_diary() {
 function read_diary() {
 	file_name=$1
 
-	unzip "./diaries/$(whoami)/$file_name.zip"
-
-	# If user hasn't installed glow, use cat to read files
-	glow "$file_name.md" 2>/dev/null || cat "$file_name.md"
-	rm "$file_name.md"
+	unzip "./diaries/$(whoami)/$file_name.zip" &&
+		(glow "$file_name.md" 2>/dev/null || cat "$file_name.md") &&
+		rm "$file_name.md"
 }
 
 # Extract diary from zip, write to it with nano and then rezip it
 function edit_diary() {
 	file_name=$1
 
-	unzip "./diaries/$(whoami)/$file_name.zip" 2>/dev/null
+	unzip "./diaries/$(whoami)/$file_name.zip"
 	write_diary "$file_name"
 
 	# Note: We could have done this whole editing thing within the read_diary function, that's right
@@ -55,7 +65,15 @@ function edit_diary() {
 function main() {
 	check_dependencies
 
-	while getopts ':w:r:e:' FLAG; do
+	if [ $# -eq 0 ]; then
+		help
+	fi
+
+	if [ ! -d "./diaries/$(whoami)" ]; then
+		mkdir -p "./diaries/$(whoami)/"
+	fi
+
+	while getopts ':w:r:e:lh' FLAG; do
 		case "$FLAG" in
 		w)
 			get_date
@@ -75,17 +93,19 @@ function main() {
 			file_name="$day-$month-$year-$OPTARG"
 			edit_diary "$file_name"
 			;;
+		l) 
+			ls "./diaries/$(whoami)/"
+			;;
+		h)
+			help
+			;;
 		?)
-			echo 'Unknown command!'
-			echo $'To read a diary: /diary.sh -r [diary_name]\nTo write a new diary: /diary.sh -w [diary_name]\nTo edit a diary: ./diary.sh -e [diary_name]'
+			echo $'Unknown command!\n'
+			echo 'For more information, try -h flag'
 			exit 1
 			;;
 		esac
 	done
-
-	if [ ! -d "./diaries/$(whoami)" ]; then
-		mkdir -p "./diaries/$(whoami)/"
-	fi
 }
 
 main "$@"
